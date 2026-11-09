@@ -20,5 +20,5 @@ This project is a custom simulation plugin built using the EurekaSim SDK platfor
 
 Watch the working C++ plugin with running blade rotations in the EurekaSim application:
 
-[![Wind Turbine Demo Video](https://www.youtube.com/watch?v=Budim0jOzn0)
+[[Wind Turbine Demo Video](https://www.youtube.com/watch?v=Budim0jOzn0)
 
