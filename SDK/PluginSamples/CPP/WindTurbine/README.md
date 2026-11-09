@@ -2,12 +2,13 @@
 
 This project is a custom simulation plugin built using the EurekaSim SDK platform. It implements a fully functional 3D WindTurbine object featuring real-time continuous blade rotation logic built with OpenGL.
 
+## Overview
+The 3D model is programmatically assembled using a vertical cylindrical tower base that anchors the structure, a rectangular nacelle block housing the simulated generator system at the apex, and a central rotor hub that drives three aerodynamic blades spaced uniformly at 120-degree angles.
 ## Project Status
 
 - [x] Generated C++ skeleton via EurekaSim Addin Wizard.
 - [x] Added `WindTurbine` object configuration parameters.
 - [x] Programmed continuous, dynamic 3D blade rotation routines.
-- [x] Cleaned repository by safely removing all default template objects (`Cube`, `Aeroplane`).
 - [ ] Implement identical plugin logic using C# SDK.
 - [ ] Implement identical plugin logic using Python SDK.
 
@@ -20,5 +21,9 @@ This project is a custom simulation plugin built using the EurekaSim SDK platfor
 
 Watch the working C++ plugin with running blade rotations in the EurekaSim application:
 
-[[Wind Turbine Demo Video](https://www.youtube.com/watch?v=Budim0jOzn0)
+## Video Demonstration
+
+Watch the working C++ plugin with running blade rotations in the EurekaSim application:
+
+[![WindTurbine Simulation Demo](https://youtube.com)](https://youtu.be)
 
