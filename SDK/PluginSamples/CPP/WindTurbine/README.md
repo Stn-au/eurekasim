@@ -21,9 +21,5 @@ The 3D model is programmatically assembled using a vertical cylindrical tower ba
 
 Watch the working C++ plugin with running blade rotations in the EurekaSim application:
 
-## Video Demonstration
-
-Watch the working C++ plugin with running blade rotations in the EurekaSim application:
-
-[![WindTurbine Simulation Demo](https://youtube.com)](https://youtu.be)
+[![WindTurbine Simulation Demo](https://youtube.com)](https://youtu.be/Budim0jOzn0)
 
