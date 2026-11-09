@@ -213,7 +213,7 @@ void CObjectDemoExperiment::DrawObject(CString ExperimentName)
 	{
 		DrawClock();
 	}
-	else if (m_ObjectPattern.m_strObjectType == _T("WindTurbine"))
+	else if (m_ObjectPattern.m_strObjectType == OBJECT_TYPE_WINDTURBINE)
 	{
 		DrawWindTurbine();
 	}
@@ -531,19 +531,17 @@ void CObjectDemoExperiment::DrawAeroplane()
 	ApplicationView->Refresh();
 }
 
-void CObjectDemoExperiment::DrawWindTurbine()
+void CObjectDemoExperiment::DrawWindTurbine() 
 {
-	// 1. Initialize Application View
 	CComPtr<IApplicationView> ApplicationView;
 	HRESULT HR = ApplicationView.CoCreateInstance(CLSID_ApplicationView);
+	if (FAILED(HR)) return;
 
-	if (FAILED(HR))
-		return;
-
+	// Initialize graphics environment 
 	ApplicationView->InitializeEnvironment(TRUE);
 	ApplicationView->BeginGraphicsCommands();
 
-	// Background color
+	// Set background color based on selected properties 
 	ApplicationView->SetBkgColor(
 		GetRValue(m_ObjectPattern.m_Color) / 255.0f,
 		GetGValue(m_ObjectPattern.m_Color) / 255.0f,
@@ -551,96 +549,110 @@ void CObjectDemoExperiment::DrawWindTurbine()
 		1.0f
 	);
 
+	// Start display list
 	HR = ApplicationView->StartNewDisplayList();
-
-	if (FAILED(HR))
-	{
+	if (FAILED(HR)) {
 		ApplicationView->EndGraphicsCommands();
 		return;
 	}
 
-	// 2. Create OpenGL View (same approach as DrawCube)
+	// Create native OpenGL view context
 	CComPtr<IOpenGLView> OpenGLView;
 	HR = OpenGLView.CoCreateInstance(CLSID_OpenGLView);
-
-	if (FAILED(HR))
-	{
+	if (FAILED(HR)) {
+		ApplicationView->EndNewDisplayList();
 		ApplicationView->EndGraphicsCommands();
 		return;
 	}
-
-	// 3. Rotation angle
-	static float turbineRotation = 0.0f;
-
-	turbineRotation += 2.0f;
-
-	if (turbineRotation >= 360.0f)
-		turbineRotation -= 360.0f;
-
-	// 4. Draw Tower
-	OpenGLView->glColor3f(0.85f, 0.85f, 0.85f);
-
-	OpenGLView->glBegin(GL_TRIANGLE_STRIP);
-
-	OpenGLView->glVertex3f(-0.04f, -1.0f, 0.0f);
-	OpenGLView->glVertex3f(0.04f, -1.0f, 0.0f);
-	OpenGLView->glVertex3f(-0.02f, 0.3f, 0.0f);
-	OpenGLView->glVertex3f(0.02f, 0.3f, 0.0f);
-
+		
+	// 1. WIND TURBINE BASE (STATIONARY) 
+	
+	OpenGLView->glColor3f(0.35f, 0.35f, 0.35f);
+	OpenGLView->glBegin(0x0007); // GL_QUADS
+	OpenGLView->glVertex3f(-0.15f, -0.95f, 0.08f); OpenGLView->glVertex3f(0.15f, -0.95f, 0.08f); 
+	OpenGLView->glVertex3f(0.15f, -0.85f, 0.08f); OpenGLView->glVertex3f(-0.15f, -0.85f, 0.08f);
+	OpenGLView->glVertex3f(-0.15f, -0.95f, -0.08f); OpenGLView->glVertex3f(0.15f, -0.95f, -0.08f);
+	OpenGLView->glVertex3f(0.15f, -0.85f, -0.08f); OpenGLView->glVertex3f(-0.15f, -0.85f, -0.08f);
+	OpenGLView->glVertex3f(-0.15f, -0.95f, 0.08f); OpenGLView->glVertex3f(-0.15f, -0.95f, -0.08f);
+	OpenGLView->glVertex3f(-0.15f, -0.85f, -0.08f); OpenGLView->glVertex3f(-0.15f, -0.85f, 0.08f);
+	OpenGLView->glVertex3f(0.15f, -0.95f, 0.08f); OpenGLView->glVertex3f(0.15f, -0.95f, -0.08f);
+	OpenGLView->glVertex3f(0.15f, -0.85f, -0.08f); OpenGLView->glVertex3f(0.15f, -0.85f, 0.08f);
 	OpenGLView->glEnd();
 
-	// 5. Position Rotor
+	// 2. WIND TURBINE TOWER (STATIONARY) 
+	OpenGLView->glColor3f(0.78f, 0.80f, 0.83f);
+	OpenGLView->glBegin(0x0007); // GL_QUADS
+	OpenGLView->glVertex3f(-0.10f, -0.85f, 0.05f); OpenGLView->glVertex3f(0.10f, -0.85f, 0.05f); 
+	OpenGLView->glVertex3f(0.035f, 0.40f, 0.025f); OpenGLView->glVertex3f(-0.035f, 0.40f, 0.025f);
+	OpenGLView->glVertex3f(-0.10f, -0.85f, -0.05f); OpenGLView->glVertex3f(0.10f, -0.85f, -0.05f); 
+	OpenGLView->glVertex3f(0.035f, 0.40f, -0.025f); OpenGLView->glVertex3f(-0.035f, 0.40f, -0.025f);
+	OpenGLView->glVertex3f(-0.10f, -0.85f, 0.05f); OpenGLView->glVertex3f(-0.10f, -0.85f, -0.05f); 
+	OpenGLView->glVertex3f(-0.035f, 0.40f, -0.025f); OpenGLView->glVertex3f(-0.035f, 0.40f, 0.025f);
+	OpenGLView->glVertex3f(0.10f, -0.85f, 0.05f); OpenGLView->glVertex3f(0.10f, -0.85f, -0.05f);
+	OpenGLView->glVertex3f(0.035f, 0.40f, -0.025f); OpenGLView->glVertex3f(0.035f, 0.40f, 0.025f);
+	OpenGLView->glEnd();
+
+	// 3. NACELLE / GENERATOR HOUSING (STATIONARY) 
+	OpenGLView->glColor3f(0.65f, 0.68f, 0.72f);
+	OpenGLView->glBegin(0x0007); // GL_QUADS
+	OpenGLView->glVertex3f(-0.18f, 0.40f, 0.06f); OpenGLView->glVertex3f(0.18f, 0.40f, 0.06f); 
+	OpenGLView->glVertex3f(0.18f, 0.50f, 0.06f); OpenGLView->glVertex3f(-0.18f, 0.50f, 0.06f);
+	OpenGLView->glVertex3f(-0.18f, 0.40f, -0.06f); OpenGLView->glVertex3f(0.18f, 0.40f, -0.06f); 
+	OpenGLView->glVertex3f(0.18f, 0.50f, -0.06f); OpenGLView->glVertex3f(-0.18f, 0.50f, -0.06f);
+	OpenGLView->glVertex3f(-0.18f, 0.50f, 0.06f); OpenGLView->glVertex3f(0.18f, 0.50f, 0.06f); 
+	OpenGLView->glVertex3f(0.18f, 0.50f, -0.06f); OpenGLView->glVertex3f(-0.18f, 0.50f, -0.06f);
+	OpenGLView->glVertex3f(-0.18f, 0.40f, 0.06f); OpenGLView->glVertex3f(0.18f, 0.40f, 0.06f); 
+	OpenGLView->glVertex3f(0.18f, 0.40f, -0.06f); OpenGLView->glVertex3f(-0.18f, 0.40f, -0.06f);
+	OpenGLView->glVertex3f(-0.18f, 0.40f, 0.06f); OpenGLView->glVertex3f(-0.18f, 0.50f, 0.06f); 
+	OpenGLView->glVertex3f(-0.18f, 0.50f, -0.06f); OpenGLView->glVertex3f(-0.18f, 0.40f, -0.06f);
+	OpenGLView->glVertex3f(0.18f, 0.40f, 0.06f); OpenGLView->glVertex3f(0.18f, 0.50f, 0.06f); 
+	OpenGLView->glVertex3f(0.18f, 0.50f, -0.06f); OpenGLView->glVertex3f(0.18f, 0.40f, -0.06f);
+	OpenGLView->glEnd();
+
+	// 4. ROTOR ASSEMBLY (THE SPINNING BLADES MECHANISM)
+	OpenGLView->glMatrixMode(0x1700); // GL_MODELVIEW
 	OpenGLView->glPushMatrix();
 
-	OpenGLView->glTranslatef(0.0f, 0.3f, 0.01f);
+	// Position the rotor hub directly on the front facing wall of the nacelle box
+	OpenGLView->glTranslatef(0.0f, 0.45f, 0.065f);
 
-	OpenGLView->glRotatef(
-		turbineRotation,
-		0.0f, 0.0f, 1.0f
-	);
+	// Apply the active, smooth matrix updates driven by the loop index clocks
+	float turbineRotation = m_TurbineRotation;
+	OpenGLView->glRotatef(turbineRotation, 0.0f, 0.0f, 1.0f);
 
-	// 6. Draw Central Hub
-	OpenGLView->glColor3f(0.95f, 0.8f, 0.2f);
-
-	OpenGLView->glBegin(GL_QUADS);
-
-	OpenGLView->glVertex3f(-0.04f, -0.04f, 0.0f);
-	OpenGLView->glVertex3f(0.04f, -0.04f, 0.0f);
-	OpenGLView->glVertex3f(0.04f, 0.04f, 0.0f);
-	OpenGLView->glVertex3f(-0.04f, 0.04f, 0.0f);
-
-	OpenGLView->glEnd();
-
-	// 7. Draw Three Turbine Blades
-	OpenGLView->glColor3f(0.0f, 0.45f, 0.85f);
-
-	for (int i = 0; i < 3; i++)
-	{
+	// 5. THREE TURBINE BLADES 
+	for (int i = 0; i < 3; ++i) {
 		OpenGLView->glPushMatrix();
-
-		OpenGLView->glRotatef(
-			i * 120.0f,
-			0.0f, 0.0f, 1.0f
-		);
-
-		OpenGLView->glBegin(GL_TRIANGLES);
-
-		OpenGLView->glVertex3f(0.0f, 0.0f, 0.0f);
-		OpenGLView->glVertex3f(-0.03f, 0.6f, 0.0f);
-		OpenGLView->glVertex3f(0.01f, 0.65f, 0.0f);
-
+		OpenGLView->glRotatef(i * 120.0f, 0.0f, 0.0f, 1.0f);
+		OpenGLView->glColor3f(0.92f, 0.94f, 0.97f);
+		OpenGLView->glBegin(0x0005); // GL_TRIANGLE_STRIP
+		OpenGLView->glVertex3f(-0.025f, 0.04f, 0.0f); OpenGLView->glVertex3f(0.025f, 0.04f, 0.0f);
+		OpenGLView->glVertex3f(-0.035f, 0.18f, 0.0f); OpenGLView->glVertex3f(0.035f, 0.18f, 0.0f);
+		OpenGLView->glVertex3f(-0.025f, 0.38f, 0.0f); OpenGLView->glVertex3f(0.025f, 0.38f, 0.0f);
+		OpenGLView->glVertex3f(-0.010f, 0.60f, 0.0f); OpenGLView->glVertex3f(0.015f, 0.60f, 0.0f);
 		OpenGLView->glEnd();
-
 		OpenGLView->glPopMatrix();
 	}
 
+	// 6. CENTRAL ROTOR HUB 
+	OpenGLView->glColor3f(0.95f, 0.72f, 0.12f);
+	OpenGLView->glBegin(0x0006); // GL_TRIANGLE_FAN
+	OpenGLView->glVertex3f(0.0f, 0.0f, 0.035f);
+	for (int i = 0; i <= 32; ++i) {
+		float angle = 2.0f * 3.14159265f * i / 32.0f;
+		OpenGLView->glVertex3f(0.065f * cosf(angle), 0.065f * sinf(angle), 0.035f);
+	}
+	OpenGLView->glEnd();
+
+	// Safely balance transformation handles to protect core graphics drivers
 	OpenGLView->glPopMatrix();
 
-	// 8. Finish Rendering
+	// 7. FINISH DISPLAY LIST 
 	ApplicationView->EndNewDisplayList();
 	ApplicationView->EndGraphicsCommands();
 	ApplicationView->Refresh();
 }
+
 
 
 
@@ -673,6 +685,7 @@ void CObjectDemoExperiment::StartObjectSimulation()
 	while (m_pManager->m_bSimulationActive)
 	{
 		ApplicationView->BeginGraphicsCommands();
+		m_TurbineRotation = Angle;
 
 		if (m_ObjectPattern.m_strSimulationPattern == OBJECT_PATTERN_TYPE_ROTATE)
 		{
@@ -708,12 +721,24 @@ void CObjectDemoExperiment::StartObjectSimulation()
 			x = 0;
 			y = 0;
 		}
-		//Rotate the Object with the specified angle
-		ApplicationView->RotateObject(Angle, x, y, z);
-		ApplicationView->EndGraphicsCommands();
-		ApplicationView->Refresh();
-		//Process the Results
+		if (m_ObjectPattern.m_strObjectType.CompareNoCase(_T("WindTurbine")) != 0)
+		{
+			// For other shapes: Apply global rotation and finish frame normally
+			ApplicationView->RotateObject(Angle, x, y, z);
+			ApplicationView->EndGraphicsCommands();
+			ApplicationView->Refresh();
+		}
+		else
+		{
+			// For the Wind Turbine: Update the blade variable and call its self-refreshing drawing loop
+			m_TurbineRotation = Angle;
+			DrawWindTurbine();
+		}
+
+
+		// Process the Results
 		OnNextSimulationPoint(Angle, x, y, z);
+
 
 		Angle = Angle + 5;
 		if (Angle > 360)

@@ -118,9 +118,12 @@ class CObjectDemoExperiment : public CObject
 {
 	CAddinSimulationManager*		m_pManager;
 	CObArray						m_PlotInfoArray;
+private:
+	float                   m_TurbineRotation;
+
 public:
 	CObjectPattern			m_ObjectPattern;
-
+	
 	CObjectDemoExperiment(CAddinSimulationManager* pManager);
 	virtual ~CObjectDemoExperiment();
 	void LoadAllExperiments();

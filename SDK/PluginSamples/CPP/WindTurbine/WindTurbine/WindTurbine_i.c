@@ -6,7 +6,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Tue Nov 03 20:38:26 2026
+/* at Sun Nov 08 23:01:36 2026
  */
 /* Compiler settings for WindTurbine.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.00.0603 
