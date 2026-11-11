@@ -26,4 +26,4 @@ The 3D model is programmatically assembled using a tapered rectangular tower col
 
 Watch the working C# plugin with running blade rotations in the EurekaSim application:
 
-[![WindTurbine C# Simulation Demo](https://youtube.com)](https://youtu.be)
+[![WindTurbine C# Simulation Demo](https://youtube.com)]https://www.youtube.com/watch?v=YhagKaaCnkU)
