@@ -19,11 +19,12 @@ The 3D model is programmatically assembled using a tapered rectangular tower col
 
 * **COM Interop Architecture:** Bridges managed C# `.NET Framework` logic with EurekaSim's native C++ engine using COM-visible wrappers (`EurekaSim.Net`) to handle experiment trees, property grids, and display lists.
 * **OpenGL Rendering & Matrix Transformations:** Uses OpenGL graphics primitives (`GL_QUADS`, `GL_TRIANGLE_STRIP`, `GL_TRIANGLE_FAN`) to build the 3D geometry and matrix stack operations (`glPushMatrix`, `glPopMatrix`, `glRotatef`) to spin only the rotor blades while keeping the tower stationary.
-* **Dynamic Animation Engine:** Uses structural rotational matrix transformations (`glPushMatrix`, `glPopMatrix`, and `glRotatef`) to update blade movement continuously on each frame render while keeping the tower stationary.
+
 
 ## Video Demonstration
 
 Watch the working C# plugin with running blade rotations in the EurekaSim application:
 
-[![WindTurbine C# Simulation Demo](https://youtube.com)](https://youtube.com)
+[![WindTurbine C# Simulation Demo](https://youtube.com)](https://youtu.be)
+
 
