@@ -15,9 +15,12 @@ The 3D model is programmatically assembled using a tapered rectangular tower col
 
 ## Key Implementation Details
 
+## Key Implementation Details
+
+* **COM Interop Architecture:** Bridges managed C# `.NET Framework` logic with EurekaSim's native C++ engine using COM-visible wrappers (`EurekaSim.Net`) to handle experiment trees, property grids, and display lists.
+* **OpenGL Rendering & Matrix Transformations:** Uses OpenGL graphics primitives (`GL_QUADS`, `GL_TRIANGLE_STRIP`, `GL_TRIANGLE_FAN`) to build the 3D geometry and matrix stack operations (`glPushMatrix`, `glPopMatrix`, `glRotatef`) to spin only the rotor blades while keeping the tower stationary.
+
 * **Dynamic Animation Engine:** Uses structural rotational matrix transformations (`glPushMatrix`, `glPopMatrix`, and `glRotatef`) to update blade movement continuously on each frame render while keeping the tower stationary.
-* **Managed COM Interop Architecture:** Bridges C# .NET Framework logic seamlessly with EurekaSim's native C++ rendering engine and property grids via COM-visible wrappers (`EurekaSim.Net`).
-* **Procedural Geometry Generation:** Builds the 32-step circular rotor hub using managed trigonometric functions (`Math.Cos` and `Math.Sin`) and aligns the three aerodynamic blades at 120-degree intervals.
 
 ## Video Demonstration
 
