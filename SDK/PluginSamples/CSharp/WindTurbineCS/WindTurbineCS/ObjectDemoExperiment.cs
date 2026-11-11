@@ -659,12 +659,12 @@ namespace WindTurbineCS
                     // DYNAMIC ANIMATION ENGINE: Increment rotation calculation angle continuously
                     if (m_ObjectPattern.m_strSimulationPattern == Constants.OBJECT_PATTERN_TYPE_ROTATE)
                     {
-                        m_TurbineRotation -= 10.0f;
+                        m_TurbineRotation += 10.0f;
                     }
                     else if (m_ObjectPattern.m_strSimulationPattern == Constants.OBJECT_PATTERN_TYPE_RANDOM)
                     {
                         Random rand = new Random();
-                        m_TurbineRotation -= (float)(rand.NextDouble() * 15.0);  // Variable shift simulations
+                        m_TurbineRotation += (float)(rand.NextDouble() * 15.0);  // Variable shift simulations
                     }
 
                     objOpenGLView.glRotatef(m_TurbineRotation, 0.0f, 0.0f, 1.0f);
